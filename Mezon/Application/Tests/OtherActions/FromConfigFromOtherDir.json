@@ -1,0 +1,14 @@
+{
+	"title": "Some title",
+	"main": {
+		"placeholder": "main",
+		"class": "\\Mezon\\Application\\Tests\\TestingView",
+		"name": "MainFromConfig",
+		"someVar": "someVarValue"
+	},
+	"presenter": {
+		"class": "\\Mezon\\Application\\Tests\\TestingPresenter3",
+		"name": "FromConfigFromOtherDir",
+		"view": "main"
+	}
+}

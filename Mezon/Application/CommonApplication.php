@@ -367,6 +367,19 @@ class CommonApplication extends Application
     }
 
     /**
+     * Method loads actions from directories
+     *
+     * @param array $paths
+     *            to directories with actions
+     */
+    public function loadActionsFromDirectories(array $paths): void
+    {
+        foreach ($paths as $path) {
+            $this->loadActionsFromDirectory($path);
+        }
+    }
+
+    /**
      * Method loads all actions from ./actions directory
      */
     private function loadActoinsFromConfig(): void

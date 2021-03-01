@@ -59,7 +59,18 @@ class CommonApplicationActionsUnitTest extends TestCase
 
                     $this->assertTrue(TestingView::$defaultViewWasRendered);
                 }
+            ],
+            // #3, calling config wich is loaded from other dir
+            [
+                'from-config-from-other-dir',
+                function (string $result) {
+                    $this->assertCommonCall($result, '<!-- index1 -->');
+
+                    $this->assertTrue(TestingPresenter3::$fromConfigFromOtherDirWasCalled);
+                }
             ]
+
+            // FromConfigFromOtherDir
         ];
     }
 

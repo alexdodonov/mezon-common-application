@@ -21,6 +21,10 @@ class TestCommonApplication extends CommonApplication
         $this->getTemplate()->addPaths([
             __DIR__ . '/Res/'
         ]);
+
+        $this->loadActionsFromDirectories([
+            __DIR__ . '/OtherActions/'
+        ]);
     }
 
     function actionArrayResult(): array
