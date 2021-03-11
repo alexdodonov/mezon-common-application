@@ -2,6 +2,7 @@
 namespace Mezon\Application;
 
 use Mezon\HtmlTemplate\HtmlTemplate;
+use Mezon\Router\Utils;
 
 class ActionBuilder
 {
@@ -109,5 +110,65 @@ class ActionBuilder
         }
 
         $result[$value['placeholder']] = $views[$key];
+    }
+
+    /**
+     * Method creates action from JSON config
+     *
+     * @param string $path
+     *            path to JSON config
+     */
+    public static function createActionFromJsonConfig(CommonApplication $app, string $path): void
+    {
+        $method = 'action' . basename($path, '.json');
+
+        $app->$method = function () use ($path, $app): array {
+            $result = [];
+
+            $presenter = null;
+            
+            // TODO extract it into separate method from here ...
+            // AND!!! method must return array($result, presenter)
+            $config = json_decode(file_get_contents($path), true);
+            $views = [];
+
+            ActionBuilder::constructOverrideHandler($path, $config);
+
+            foreach ($config as $key => $value) {
+                $callback = ActionBuilder::getActionBuilderMethod($app, $key, $value);
+
+                if ($callback !== null) {
+                    $callback();
+                } elseif (is_string($value)) {
+                    // string content
+                    $result[$key] = $value;
+                } elseif ($key === 'presenter') {
+                    $presenter = new $value['class'](
+                        isset($value['view']) && isset($views[$value['view']]) ? $views[$value['view']] : null,
+                        $value['name'],
+                        $app->getRequestParamsFetcher());
+                } else {
+                    ActionBuilder::constructOtherView($app, $result, $key, $value, $views);
+                }
+            }
+            // ... till here
+
+            $app->result($presenter);
+
+            return $result;
+        };
+
+        $app->loadRoute(
+            [
+                'route' => Utils::convertMethodNameToRoute($method),
+                'callback' => [
+                    $app,
+                    $method
+                ],
+                'method' => [
+                    'GET',
+                    'POST'
+                ]
+            ]);
     }
 }

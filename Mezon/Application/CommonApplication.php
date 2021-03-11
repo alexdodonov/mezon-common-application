@@ -3,7 +3,6 @@ namespace Mezon\Application;
 
 use Mezon\HtmlTemplate\HtmlTemplate;
 use Mezon\Rest;
-use Mezon\Router\Utils;
 
 /**
  * Class CommonApplication
@@ -288,63 +287,6 @@ class CommonApplication extends Application
     }
 
     /**
-     * Method creates action from JSON config
-     *
-     * @param string $path
-     *            path to JSON config
-     */
-    private function createActionFromJsonConfig(string $path): void
-    {
-        $method = 'action' . basename($path, '.json');
-
-        $this->$method = function () use ($path): array {
-            $result = [];
-
-            // TODO extract method and put in the ActionBuilder
-            $presenter = null;
-            $config = json_decode(file_get_contents($path), true);
-            $views = [];
-
-            ActionBuilder::constructOverrideHandler($path, $config);
-
-            foreach ($config as $key => $value) {
-                $callback = ActionBuilder::getActionBuilderMethod($this, $key, $value);
-
-                if ($callback !== null) {
-                    $callback();
-                } elseif (is_string($value)) {
-                    // string content
-                    $result[$key] = $value;
-                } elseif ($key === 'presenter') {
-                    $presenter = new $value['class'](
-                        isset($value['view']) && isset($views[$value['view']]) ? $views[$value['view']] : null,
-                        $value['name'],
-                        $this->getRequestParamsFetcher());
-                } else {
-                    ActionBuilder::constructOtherView($this, $result, $key, $value, $views);
-                }
-            }
-
-            $this->result($presenter);
-
-            return $result;
-        };
-
-        $this->loadRoute(
-            [
-                'route' => Utils::convertMethodNameToRoute($method),
-                'callback' => [
-                    $this,
-                    $method
-                ],
-                'method' => [
-                    'GET',
-                    'POST'
-                ]
-            ]);
-    }
-
-    /**
      * Method loads actions from path
      *
      * @param string $path
@@ -358,7 +300,7 @@ class CommonApplication extends Application
                 if ($file === '.' || $file === '..') {
                     // do nothing
                 } elseif (is_file($path . '/' . $file) && strpos($file, '.json') !== false) {
-                    $this->createActionFromJsonConfig($path . '/' . $file);
+                    ActionBuilder::createActionFromJsonConfig($this, $path . '/' . $file);
                 } elseif (is_dir($path . '/' . $file)) {
                     $this->loadActionsFromDirectory($path . '/' . $file);
                 }
