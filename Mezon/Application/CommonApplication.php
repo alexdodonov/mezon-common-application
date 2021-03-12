@@ -97,7 +97,7 @@ class CommonApplication extends Application
         $error->message = $e->getMessage();
         $error->code = $e->getCode();
         $error->call_stack = $this->formatCallStack($e);
-        if (isset($_SERVER['HTTP_HOST']) && $_SERVER['REQUEST_URI']) {
+        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
             $error->host = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         } else {
             $error->host = 'undefined';
