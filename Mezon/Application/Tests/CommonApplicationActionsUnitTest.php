@@ -2,7 +2,6 @@
 namespace Mezon\Application\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Mezon\Application\CommonApplication;
 use Mezon\HtmlTemplate\HtmlTemplate;
 use Mezon\Application\View;
 
