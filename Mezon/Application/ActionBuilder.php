@@ -45,7 +45,6 @@ class ActionBuilder
     public static function constructOverrideHandler(string $path, array &$config): void
     {
         if (isset($config['override'])) {
-
             $path = pathinfo($path, PATHINFO_DIRNAME);
 
             $baseConfig = json_decode(file_get_contents($path . '/' . $config['override']), true);
