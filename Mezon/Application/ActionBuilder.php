@@ -8,7 +8,7 @@ class ActionBuilder
 {
 
     /**
-     * Ignore config keyu
+     * Ignore config key
      *
      * @return callable factory method
      */
@@ -113,6 +113,48 @@ class ActionBuilder
     }
 
     /**
+     * Method returns action body
+     *
+     * @param CommonApplication $app
+     *            application object
+     * @param string $path
+     *            path to JSON config
+     * @return array ($result, $presenter)
+     */
+    private static function getActionBody(CommonApplication $app, string $path): array
+    {
+        $result = [];
+        $presenter = null;
+        $config = json_decode(file_get_contents($path), true);
+        $views = [];
+
+        ActionBuilder::constructOverrideHandler($path, $config);
+
+        foreach ($config as $key => $value) {
+            $callback = ActionBuilder::getActionBuilderMethod($app, $key, $value);
+
+            if ($callback !== null) {
+                $callback();
+            } elseif (is_string($value)) {
+                // string content
+                $result[$key] = $value;
+            } elseif ($key === 'presenter') {
+                $presenter = new $value['class'](
+                    isset($value['view']) && isset($views[$value['view']]) ? $views[$value['view']] : null,
+                    $value['name'],
+                    $app->getRequestParamsFetcher());
+            } else {
+                ActionBuilder::constructOtherView($app, $result, $key, $value, $views);
+            }
+        }
+
+        return array(
+            $result,
+            $presenter
+        );
+    }
+
+    /**
      * Method creates action from JSON config
      *
      * @param string $path
@@ -123,35 +165,7 @@ class ActionBuilder
         $method = 'action' . basename($path, '.json');
 
         $app->$method = function () use ($path, $app): array {
-            $result = [];
-
-            $presenter = null;
-            
-            // TODO extract it into separate method from here ...
-            // AND!!! method must return array($result, presenter)
-            $config = json_decode(file_get_contents($path), true);
-            $views = [];
-
-            ActionBuilder::constructOverrideHandler($path, $config);
-
-            foreach ($config as $key => $value) {
-                $callback = ActionBuilder::getActionBuilderMethod($app, $key, $value);
-
-                if ($callback !== null) {
-                    $callback();
-                } elseif (is_string($value)) {
-                    // string content
-                    $result[$key] = $value;
-                } elseif ($key === 'presenter') {
-                    $presenter = new $value['class'](
-                        isset($value['view']) && isset($views[$value['view']]) ? $views[$value['view']] : null,
-                        $value['name'],
-                        $app->getRequestParamsFetcher());
-                } else {
-                    ActionBuilder::constructOtherView($app, $result, $key, $value, $views);
-                }
-            }
-            // ... till here
+            list ($result, $presenter) = self::getActionBody($app, $path);
 
             $app->result($presenter);
 
