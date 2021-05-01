@@ -9,6 +9,16 @@ class CommonApplicationActionsUnitTest extends TestCase
 {
 
     /**
+     *
+     * {@inheritdoc}
+     * @see \PHPUnit\Framework\TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        unset($_GET['action-message']);
+    }
+
+    /**
      * Asserting that page was generated
      *
      * @param string $result
