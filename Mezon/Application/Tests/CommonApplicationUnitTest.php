@@ -101,7 +101,7 @@ class CommonApplicationUnitTest extends \PHPUnit\Framework\TestCase
 
         // assertions
         $this->assertExceptionFields($output);
-        $this->assertStringContainsString('"httpBody"', $output);
+        $this->assertStringContainsString('"http_body"', $output);
     }
 
     /**

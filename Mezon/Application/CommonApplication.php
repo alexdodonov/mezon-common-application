@@ -96,12 +96,94 @@ class CommonApplication extends Application
         $error = new \stdClass();
         $error->message = $e->getMessage();
         $error->code = $e->getCode();
-        $error->call_stack = $this->formatCallStack($e);
-        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI'])) {
+
+        if (isset($_SERVER['HTTP_HOST']) && $_SERVER['REQUEST_URI']) {
             $error->host = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         } else {
             $error->host = 'undefined';
         }
+        return $error;
+    }
+
+    /**
+     * Method formats raw body
+     *
+     * @param string $body
+     *            raw body
+     * @return mixed formatted body or raw if it was not parsed
+     */
+    protected function formatRawBody(string $body)
+    {
+        $matches = [];
+
+        // extracting errors from the XDebug output
+        // TODO parse non XDebug output
+        $return = [];
+
+        if (preg_match('/<th.*\( ! \)<\/span>(.*)<\/th>/mU', $body, $matches)) {
+            $return[] = trim($matches[1]);
+        } else {
+            return $body;
+        }
+
+        // extract call trace from the XDebug output
+
+        // cutting the first table
+        $body = substr($body, 0, strpos($body, '</table>'));
+
+        // parsing string
+        if (preg_match_all("/<tr><td.*<\/td><td.*<\/td><td.*<\/td><td.*<\/td><td.*>(.*)<\/td>/mU", $body, $matches)) {
+            // cleaning data
+            $matches = $matches[1];
+
+            // cleaning tags
+            foreach ($matches as $i => $match) {
+                $matches[$i] = strip_tags($match);
+                $matches[$i] = str_replace(':', ' (', $matches[$i]) . ')';
+            }
+
+            // saving result
+            $return = array_merge($return, $matches);
+        } else {
+            return $return;
+        }
+
+        return $return;
+    }
+
+    /**
+     * Method formats body
+     *
+     * @param string $body
+     *            body to be formatted
+     * @return string|array formatted bodt
+     */
+    protected function formatBody(string $body)
+    {
+        if ($formattedBody = json_decode($body) === null) {
+            return $this->formatRawBody($body);
+        } else {
+            return $formattedBody;
+        }
+    }
+
+    /**
+     * Method formats REST exception object
+     *
+     * @param Rest\Exception $e
+     *            Exception
+     * @return object Formatted exception object
+     */
+    protected function jsonFormatter(Rest\Exception $e): object
+    {
+        $error = $this->baseFormatter($e);
+
+        $error->call_stack = $this->formatCallStack($e);
+
+        $error->call_stack[] = $this->formatBody($e->getHttpBody());
+
+        $error->http_body = '<parsed>';
+
         return $error;
     }
 
@@ -113,9 +195,7 @@ class CommonApplication extends Application
      */
     public function handleRestException(Rest\Exception $e): void
     {
-        $error = $this->baseFormatter($e);
-
-        $error->httpBody = $e->getHttpBody();
+        $error = $this->jsonFormatter($e);
 
         print('<pre>' . json_encode($error, JSON_PRETTY_PRINT));
     }
@@ -129,6 +209,8 @@ class CommonApplication extends Application
     public function handleException(\Exception $e): void
     {
         $error = $this->baseFormatter($e);
+
+        $error->call_stack = $this->formatCallStack($e);
 
         print('<pre>' . json_encode($error, JSON_PRETTY_PRINT));
     }
