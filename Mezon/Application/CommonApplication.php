@@ -123,7 +123,8 @@ class CommonApplication extends Application
         if (preg_match('/<th.*\( ! \)<\/span>(.*)<\/th>/mU', $body, $matches)) {
             $return[] = trim($matches[1]);
         } else {
-            return $body;
+            // encode tags
+            return htmlentities($body);
         }
 
         // extract call trace from the XDebug output
@@ -182,7 +183,7 @@ class CommonApplication extends Application
 
         $error->call_stack[] = $this->formatBody($e->getHttpBody());
 
-        $error->http_body = '<parsed>';
+        $error->http_body = '&lt;parsed&gt;';
 
         return $error;
     }
