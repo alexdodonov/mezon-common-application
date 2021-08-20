@@ -320,13 +320,31 @@ class CommonApplication extends Application
     }
 
     /**
-     * Method returns action-message or '' if not set
+     * Method returns success message
      *
-     * @return string
+     * @return string success message code
      */
-    protected function getActionMessageCode(): string
+    protected function getSuccessMessageCode(): string
     {
-        return $_GET['action-message'] ?? '';
+        if (isset($_GET['success-message'])) {
+            return $_GET['success-message'];
+        } else {
+            return $_GET['action-message'] ?? '';
+        }
+    }
+
+    /**
+     * Method returns error message
+     *
+     * @return string error message code
+     */
+    protected function getErrorMessageCode(): string
+    {
+        if (isset($_GET['error-message'])) {
+            return $_GET['error-message'];
+        } else {
+            return $_GET['action-message'] ?? '';
+        }
     }
 
     /**
@@ -364,8 +382,10 @@ class CommonApplication extends Application
             $presenter->run();
         }
 
-        if ($actionMessage = $this->getActionMessageCode()) {
+        if (($actionMessage = $this->getSuccessMessageCode()) !== '') {
             $this->setSuccessMessage($actionMessage);
+        } elseif (($actionMessage = $this->getErrorMessageCode()) !== '') {
+            $this->setErrorMessage($actionMessage);
         }
     }
 

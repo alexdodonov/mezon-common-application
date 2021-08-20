@@ -58,6 +58,11 @@ class TestCommonApplication extends CommonApplication
         // do nothing
     }
 
+    /**
+     * Flag
+     *
+     * @var boolean
+     */
     public $hasMessages = true;
 
     protected function fileExists(string $fileName): bool

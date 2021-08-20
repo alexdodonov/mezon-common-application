@@ -2,15 +2,19 @@
 namespace Mezon\Application\Tests;
 
 use Mezon\Rest;
-use Mezon\Application\View;
+use PHPUnit\Framework\TestCase;
 
-class CommonApplicationUnitTest extends \PHPUnit\Framework\TestCase
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
+class CommonApplicationUnitTest extends TestCase
 {
 
     /**
      * Running with complex router result
      */
-    public function testComplexRouteResult()
+    public function testComplexRouteResult(): void
     {
         $application = new TestCommonApplication();
 
@@ -29,7 +33,7 @@ class CommonApplicationUnitTest extends \PHPUnit\Framework\TestCase
     /**
      * Compiling page with functional view
      */
-    public function testComplexViewRenderring()
+    public function testComplexViewRenderring(): void
     {
         // setup
         $application = new TestCommonApplication();
@@ -67,7 +71,7 @@ class CommonApplicationUnitTest extends \PHPUnit\Framework\TestCase
     /**
      * Testing handleException method
      */
-    public function testHandleException()
+    public function testHandleException(): void
     {
         // setup
         $application = new TestCommonApplication();
@@ -87,7 +91,7 @@ class CommonApplicationUnitTest extends \PHPUnit\Framework\TestCase
     /**
      * Testing handle_rest_exception method
      */
-    public function testHandleRestException()
+    public function testHandleRestException(): void
     {
         // setup
         $application = new TestCommonApplication();
@@ -107,7 +111,7 @@ class CommonApplicationUnitTest extends \PHPUnit\Framework\TestCase
     /**
      * Testing handleException method
      */
-    public function testHandleExceptionWithHost()
+    public function testHandleExceptionWithHost(): void
     {
         // setup
         $application = new TestCommonApplication();
@@ -137,7 +141,7 @@ class CommonApplicationUnitTest extends \PHPUnit\Framework\TestCase
         // setup and assertions
         $_GET['r'] = 'invalid';
         $application = $this->getMockBuilder(TestCommonApplication::class)
-            ->setMethods([
+            ->onlyMethods([
             'handleException'
         ])
             ->getMock();
@@ -156,7 +160,7 @@ class CommonApplicationUnitTest extends \PHPUnit\Framework\TestCase
         // setup and assertions
         $_GET['r'] = 'rest';
         $application = $this->getMockBuilder(TestCommonApplication::class)
-            ->setMethods([
+            ->onlyMethods([
             'handleRestException'
         ])
             ->getMock();

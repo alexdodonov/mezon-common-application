@@ -5,6 +5,10 @@ use PHPUnit\Framework\TestCase;
 use Mezon\Application\CommonApplication;
 use Mezon\HtmlTemplate\HtmlTemplate;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class SetMessageUnitTest extends TestCase
 {
 
@@ -42,7 +46,7 @@ class SetMessageUnitTest extends TestCase
         $application->$method('test-error');
 
         // assertions
-        $this->assertStringContainsString('error', $application->getTemplate()
+        $this->assertStringContainsString('message', $application->getTemplate()
             ->getPageVar('action-message'));
     }
 }

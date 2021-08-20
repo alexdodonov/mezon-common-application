@@ -11,6 +11,11 @@ use Mezon\Application\Presenter;
 class TestingPresenter3 extends Presenter
 {
 
+    /**
+     * Flag
+     *
+     * @var boolean
+     */
     public static $fromConfigFromOtherDirWasCalled = false;
 
     public function presenterFromConfigFromOtherDir(): void

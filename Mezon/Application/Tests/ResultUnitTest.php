@@ -1,10 +1,12 @@
 <?php
 namespace Mezon\Application\Tests;
 
-use Mezon\Rest;
 use Mezon\Application\View;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class ResultUnitTest extends TestCase
 {
 
@@ -29,17 +31,47 @@ class ResultUnitTest extends TestCase
             ],
             [ // #1 testing action message setup
                 function (): TestCommonApplication {
+                    unset($_GET['success-message']);
+                    unset($_GET['error-message']);
                     $_GET['action-message'] = 'test-error';
                     return new TestCommonApplication();
                 },
                 $presenter,
                 function (array $params): void {
-                    $this->assertEquals('error', $params[1]->getTemplate()
+                    $this->assertEquals('message', $params[1]->getTemplate()
                         ->getPageVar('action-message'));
                 }
             ],
-            [ // #2 no file with the messages
+            [ // #2 testing error message setup
                 function (): TestCommonApplication {
+                    unset($_GET['action-message']);
+                    unset($_GET['success-message']);
+                    $_GET['error-message'] = 'test-error';
+                    return new TestCommonApplication();
+                },
+                $presenter,
+                function (array $params): void {
+                    $this->assertEquals('message', $params[1]->getTemplate()
+                        ->getPageVar('action-message'));
+                }
+            ],
+            [ // #3 testing success message setup
+                function (): TestCommonApplication {
+                    unset($_GET['action-message']);
+                    unset($_GET['error-message']);
+                    $_GET['success-message'] = 'test-error';
+                    return new TestCommonApplication();
+                },
+                $presenter,
+                function (array $params): void {
+                    $this->assertEquals('message', $params[1]->getTemplate()
+                        ->getPageVar('action-message'));
+                }
+            ],
+            [ // #4 no file with the messages
+                function (): TestCommonApplication {
+                    unset($_GET['success-message']);
+                    unset($_GET['error-message']);
                     $_GET['action-message'] = 'test-error';
                     $application = new TestCommonApplication();
                     $application->hasMessages = false;
