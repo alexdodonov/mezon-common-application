@@ -147,10 +147,10 @@ class ActionBuilder
             }
         }
 
-        return array(
+        return [
             $result,
             $presenter
-        );
+        ];
     }
 
     /**

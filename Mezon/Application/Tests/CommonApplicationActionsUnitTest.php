@@ -4,6 +4,7 @@ namespace Mezon\Application\Tests;
 use PHPUnit\Framework\TestCase;
 
 /**
+ *
  * @psalm-suppress PropertyNotSetInConstructor
  */
 class CommonApplicationActionsUnitTest extends TestCase
@@ -17,6 +18,7 @@ class CommonApplicationActionsUnitTest extends TestCase
     protected function setUp(): void
     {
         unset($_GET['action-message']);
+        $_SERVER['REQUEST_METHOD'] = 'GET';
     }
 
     /**
@@ -32,8 +34,6 @@ class CommonApplicationActionsUnitTest extends TestCase
         $this->assertStringContainsString('Some title', $result);
         $this->assertStringContainsString('Main From Config', $result);
         $this->assertStringContainsString($layout, $result);
-
-        $this->assertTrue(TestingPresenter::$actionPresenterFromConfigWasCalled);
     }
 
     /**
@@ -49,6 +49,7 @@ class CommonApplicationActionsUnitTest extends TestCase
                 'from-config',
                 function (string $result) {
                     $this->assertCommonCall($result, '<!-- index1 -->');
+                    $this->assertTrue(TestingPresenter::$actionPresenterFromConfigWasCalled);
                     $this->assertStringContainsString('someVarValue', $result);
                 }
             ],
@@ -57,7 +58,7 @@ class CommonApplicationActionsUnitTest extends TestCase
                 'from-config2',
                 function (string $result) {
                     $this->assertCommonCall($result, '<!-- index2 -->');
-
+                    $this->assertTrue(TestingPresenter::$actionPresenterFromConfigWasCalled);
                     $this->assertTrue(TestingView::$defaultViewWasRendered);
                 }
             ],
@@ -66,7 +67,7 @@ class CommonApplicationActionsUnitTest extends TestCase
                 'from-config3',
                 function (string $result) {
                     $this->assertCommonCall($result, '<!-- index1 -->');
-
+                    $this->assertTrue(TestingPresenter::$actionPresenterFromConfigWasCalled);
                     $this->assertTrue(TestingView::$defaultViewWasRendered);
                 }
             ],
@@ -75,7 +76,6 @@ class CommonApplicationActionsUnitTest extends TestCase
                 'from-config-from-other-dir',
                 function (string $result) {
                     $this->assertCommonCall($result, '<!-- index1 -->');
-
                     $this->assertTrue(TestingPresenter3::$fromConfigFromOtherDirWasCalled);
                 }
             ]

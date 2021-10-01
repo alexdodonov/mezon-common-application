@@ -40,9 +40,9 @@ class CommonApplication extends Application
     /**
      * Application's template
      *
-     * @var HtmlTemplate
+     * @var ?HtmlTemplate
      */
-    private $template = false;
+    private $template = null;
 
     /**
      * Constructor
@@ -130,7 +130,8 @@ class CommonApplication extends Application
         // extract call trace from the XDebug output
 
         // cutting the first table
-        $body = substr($body, 0, strpos($body, '</table>'));
+        $strpos = strpos($body, '</table>');
+        $body = substr($body, 0, $strpos === false ? null : $strpos);
 
         // parsing string
         if (preg_match_all("/<tr><td.*<\/td><td.*<\/td><td.*<\/td><td.*<\/td><td.*>(.*)<\/td>/mU", $body, $matches)) {
@@ -161,7 +162,9 @@ class CommonApplication extends Application
      */
     protected function formatBody(string $body)
     {
-        if ($formattedBody = json_decode($body) === null) {
+        $formattedBody = json_decode($body);
+
+        if ($formattedBody === null || $formattedBody === false) {
             return $this->formatRawBody($body);
         } else {
             return $formattedBody;
@@ -225,7 +228,7 @@ class CommonApplication extends Application
     protected function setGetVar(string $fieldName): void
     {
         if (isset($_GET[$fieldName])) {
-            $this->template->setPageVar($fieldName, $_GET[$fieldName]);
+            $this->getTemplate()->setPageVar($fieldName, $_GET[$fieldName]);
         }
     }
 
@@ -243,17 +246,15 @@ class CommonApplication extends Application
 
             $result = array_merge($callRouteResult, $this->crossRender());
 
-            if (is_array($result)) {
-                foreach ($result as $key => $value) {
-                    $content = $value instanceof ViewInterface ? $value->render() : $value;
+            foreach ($result as $key => $value) {
+                $content = $value instanceof ViewInterface ? $value->render() : $value;
 
-                    $this->template->setPageVar($key, $content);
-                }
+                $this->getTemplate()->setPageVar($key, $content);
             }
 
             $this->setGetVar('redirect-to');
 
-            print($this->template->compile());
+            print($this->getTemplate()->compile());
         } catch (Rest\Exception $e) {
             $this->handleRestException($e);
         } catch (\Exception $e) {
@@ -269,6 +270,10 @@ class CommonApplication extends Application
      */
     public function getTemplate(): HtmlTemplate
     {
+        if ($this->template === null) {
+            throw (new \Exception('Template was not set', - 1));
+        }
+
         return $this->template;
     }
 
@@ -374,7 +379,7 @@ class CommonApplication extends Application
      *
      * @param mixed $presenter
      *            main area presenter
-     * @return array result record
+     * @return void result record
      */
     public function result($presenter = null): void
     {

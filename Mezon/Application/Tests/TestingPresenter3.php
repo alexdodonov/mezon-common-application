@@ -18,6 +18,9 @@ class TestingPresenter3 extends Presenter
      */
     public static $fromConfigFromOtherDirWasCalled = false;
 
+    /**
+     * Presenter
+     */
     public function presenterFromConfigFromOtherDir(): void
     {
         self::$fromConfigFromOtherDirWasCalled = true;
