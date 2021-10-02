@@ -12,13 +12,23 @@ class CommonApplicationUnitTest extends TestCase
 {
 
     /**
+     *
+     * {@inheritdoc}
+     * @see \PHPUnit\Framework\TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        // setup context
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+    }
+
+    /**
      * Running with complex router result
      */
     public function testComplexRouteResult(): void
     {
         $application = new TestCommonApplication();
 
-        $_SERVER['REQUEST_METHOD'] = 'GET';
         $_GET['r'] = '/array-result/';
 
         ob_start();
@@ -38,7 +48,6 @@ class CommonApplicationUnitTest extends TestCase
         // setup
         $application = new TestCommonApplication();
 
-        $_SERVER['REQUEST_METHOD'] = 'GET';
         $_GET['r'] = '/view-result/';
         $_GET['redirect-to'] = 'redirectTo';
 
