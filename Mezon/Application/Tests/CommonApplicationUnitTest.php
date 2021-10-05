@@ -190,6 +190,8 @@ class CommonApplicationUnitTest extends TestCase
 
         // setup
         $_GET['action-message'] = 'unexisting-message';
+        unset($_GET['error-message']);
+        unset($_GET['success-message']);
         $application = new TestCommonApplication();
 
         // test body
