@@ -98,51 +98,6 @@ class CommonApplicationUnitTest extends TestCase
     }
 
     /**
-     * Testing handle_rest_exception method
-     */
-    public function testHandleRestException(): void
-    {
-        // setup
-        $application = new TestCommonApplication();
-
-        $e = new Rest\Exception('', 0, 200, '');
-        // test body
-        ob_start();
-        $application->handleRestException($e);
-        $output = ob_get_contents();
-        ob_end_clean();
-
-        // assertions
-        $this->assertExceptionFields($output);
-        $this->assertStringContainsString('"http_body"', $output);
-    }
-
-    /**
-     * Testing handleException method
-     */
-    public function testHandleExceptionWithHost(): void
-    {
-        // setup
-        $application = new TestCommonApplication();
-        $output = '';
-        $_SERVER['HTTP_HOST'] = 'some host';
-        $_SERVER['REQUEST_URI'] = 'some uri';
-        try {
-            throw (new \Exception('', 0));
-        } catch (\Exception $e) {
-            // test body
-            ob_start();
-            $application->handleException($e);
-            $output = ob_get_contents();
-            ob_end_clean();
-        }
-
-        // assertions
-        $output = json_decode(str_replace('<pre>', '', $output), true);
-        $this->assertEquals('some hostsome uri', $output['host']);
-    }
-
-    /**
      * Testing exception throwing after invalid route handling
      */
     public function testInvalidRouteException(): void
