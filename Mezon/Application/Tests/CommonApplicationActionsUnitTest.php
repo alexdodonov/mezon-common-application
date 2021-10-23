@@ -13,11 +13,16 @@ class CommonApplicationActionsUnitTest extends TestCase
     /**
      *
      * {@inheritdoc}
-     * @see \PHPUnit\Framework\TestCase::setUp()
+     * @see TestCase::setUp()
      */
     protected function setUp(): void
     {
-        unset($_GET['action-message']);
+        if (isset($_GET)) {
+            unset($_GET['error-message']);
+            unset($_GET['success-message']);
+            unset($_GET['action-message']);
+        }
+
         $_SERVER['REQUEST_METHOD'] = 'GET';
     }
 
