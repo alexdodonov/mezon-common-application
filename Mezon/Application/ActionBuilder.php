@@ -12,22 +12,22 @@ class ActionBuilder
      *
      * @return callable factory method
      */
-    public static function ignoreKey(): callable
+    private static function ignoreKey(): callable
     {
         return function (): void {
-            // do nothind
+            // do nothing
         };
     }
 
     /**
      * Method resets layout
      *
-     * @param $template template
+     * @param HtmlTemplate $template template
      * @param string $value
      *            new layout
      * @return callable factory method
      */
-    public static function resetLayout(HtmlTemplate $template, string $value): callable
+    private static function resetLayout(HtmlTemplate $template, string $value): callable
     {
         return function () use ($template, $value) {
             $template->resetLayout($value);
@@ -42,7 +42,7 @@ class ActionBuilder
      * @param array $config
      *            config itself
      */
-    public static function constructOverrideHandler(string $path, array &$config): void
+    private static function constructOverrideHandler(string $path, array &$config): void
     {
         if (isset($config['override'])) {
             $path = pathinfo($path, PATHINFO_DIRNAME);
