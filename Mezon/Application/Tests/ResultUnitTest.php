@@ -26,7 +26,7 @@ class ResultUnitTest extends TestCase
                 },
                 $presenter,
                 function (array $params) {
-                    $this->assertTrue($params[0]->wasCalled);
+                    $this->assertTrue(TestingPresenter::$wasCalled);
                 }
                 ],
                 [ // #1 testing action message setup
