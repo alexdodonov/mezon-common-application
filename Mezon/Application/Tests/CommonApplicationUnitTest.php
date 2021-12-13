@@ -1,7 +1,6 @@
 <?php
 namespace Mezon\Application\Tests;
 
-use Mezon\Rest;
 use PHPUnit\Framework\TestCase;
 
 /**

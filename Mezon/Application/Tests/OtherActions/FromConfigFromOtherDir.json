@@ -2,7 +2,7 @@
 	"title": "Some title",
 	"main": {
 		"placeholder": "main",
-		"class": "\\Mezon\\Application\\Tests\\TestingView",
+		"class": "\\Mezon\\View\\Tests\\TestingView",
 		"name": "MainFromConfig",
 		"someVar": "someVarValue"
 	},

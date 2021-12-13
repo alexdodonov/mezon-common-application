@@ -1,8 +1,8 @@
 <?php
 namespace Mezon\Application\Tests;
 
-use Mezon\Application\View;
 use PHPUnit\Framework\TestCase;
+use Mezon\View;
 
 /**
  *
@@ -88,6 +88,7 @@ class ResultUnitTest extends TestCase
      * @param callable $assert
      *            asserter
      * @dataProvider resultMethodDataProvider
+     * @psalm-suppress RedundantCondition
      */
     public function testResultMethod(callable $setup, object $handler, callable $assert = null): void
     {

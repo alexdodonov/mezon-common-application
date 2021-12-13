@@ -34,6 +34,8 @@ class HandleExceptionWithHostOutputUnitTest extends TestCase
 
     /**
      * Testing handleException method without method
+     * 
+     * @psalm-suppress RedundantCondition
      */
     public function testHandleExceptionWithoutHost(): void
     {

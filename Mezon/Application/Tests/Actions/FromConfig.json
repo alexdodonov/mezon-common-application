@@ -2,12 +2,12 @@
 	"title": "Some title",
 	"other-view": {
 		"placeholder": "other-main",
-		"class": "\\Mezon\\Application\\Tests\\TestingView",
+		"class": "\\Mezon\\View\\Tests\\TestingView",
 		"name": "MainFromConfig"
 	},
 	"main": {
 		"placeholder": "main",
-		"class": "\\Mezon\\Application\\Tests\\TestingView",
+		"class": "\\Mezon\\View\\Tests\\TestingView",
 		"name": "MainFromConfig",
 		"someVar": "someVarValue"
 	},

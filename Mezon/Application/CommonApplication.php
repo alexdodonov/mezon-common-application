@@ -3,6 +3,7 @@ namespace Mezon\Application;
 
 use Mezon\HtmlTemplate\HtmlTemplate;
 use Mezon\Rest;
+use Mezon\ViewInterface;
 
 /**
  * Class CommonApplication
@@ -298,6 +299,7 @@ class CommonApplication extends Application
      */
     protected function fileExists(string $fileName): bool
     {
+        // TODO remove it
         return $this->getTemplate()->fileExists($fileName);
     }
 
@@ -310,6 +312,7 @@ class CommonApplication extends Application
      */
     protected function getActionMessage(string $actionMessageCode): string
     {
+        // TODO remove it because HtmlTemplate incapsulates this functionality
         if ($this->fileExists('action-messages.json')) {
             $messages = $this->getTemplate()->getFile('action-messages.json');
             $messages = json_decode($messages, true);
@@ -325,34 +328,6 @@ class CommonApplication extends Application
     }
 
     /**
-     * Method returns success message
-     *
-     * @return string success message code
-     */
-    protected function getSuccessMessageCode(): string
-    {
-        if (isset($_GET['success-message'])) {
-            return $_GET['success-message'];
-        } else {
-            return $_GET['action-message'] ?? '';
-        }
-    }
-
-    /**
-     * Method returns error message
-     *
-     * @return string error message code
-     */
-    protected function getErrorMessageCode(): string
-    {
-        if (isset($_GET['error-message'])) {
-            return $_GET['error-message'];
-        } else {
-            return $_GET['action-message'] ?? '';
-        }
-    }
-
-    /**
      * Method sets message variable
      *
      * @param string $successMessageLocator
@@ -360,6 +335,7 @@ class CommonApplication extends Application
      */
     public function setSuccessMessage(string $successMessageLocator): void
     {
+        // TODO remove it
         $this->getTemplate()->setPageVar('action-message', $this->getActionMessage($successMessageLocator));
     }
 
@@ -371,6 +347,7 @@ class CommonApplication extends Application
      */
     public function setErrorMessage(string $errorMessageLocator): void
     {
+        // TODO remove it
         $this->getTemplate()->setPageVar('action-message', $this->getActionMessage($errorMessageLocator));
     }
 
@@ -387,9 +364,9 @@ class CommonApplication extends Application
             $presenter->run();
         }
 
-        if (($actionMessage = $this->getSuccessMessageCode()) !== '') {
+        if (($actionMessage = $this->getTemplate()->getSuccessMessageCode()) !== '') {
             $this->setSuccessMessage($actionMessage);
-        } elseif (($actionMessage = $this->getErrorMessageCode()) !== '') {
+        } elseif (($actionMessage = $this->getTemplate()->getErrorMessageCode()) !== '') {
             $this->setErrorMessage($actionMessage);
         }
     }
@@ -430,7 +407,7 @@ class CommonApplication extends Application
     }
 
     /**
-     * Method loads all actions from ./actions directory
+     * Method loads all actions from ./Actions directory
      */
     private function loadActoinsFromConfig(): void
     {

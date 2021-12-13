@@ -2,6 +2,7 @@
 namespace Mezon\Application\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Mezon\View\Tests\TestingView;
 
 /**
  *
@@ -14,6 +15,7 @@ class CommonApplicationActionsUnitTest extends TestCase
      *
      * {@inheritdoc}
      * @see TestCase::setUp()
+     * @psalm-suppress RedundantCondition
      */
     protected function setUp(): void
     {
