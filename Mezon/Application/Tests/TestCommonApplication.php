@@ -4,7 +4,7 @@ namespace Mezon\Application\Tests;
 use Mezon\Rest;
 use Mezon\HtmlTemplate\HtmlTemplate;
 use Mezon\Application\CommonApplication;
-use Mezon\View\Tests\TestingView;
+use Mezon\Tests\TestingView;
 
 /**
  * Application for testing purposes.

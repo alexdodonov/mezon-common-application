@@ -2,7 +2,7 @@
 namespace Mezon\Application\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Mezon\View\Tests\TestingView;
+use Mezon\Tests\TestingView;
 
 /**
  *

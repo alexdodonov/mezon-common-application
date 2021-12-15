@@ -2,11 +2,11 @@
 	"title": "Some title",
 	"other-view": {
 		"placeholder": "other-main",
-		"class": "\\Mezon\\View\\Tests\\TestingView"
+		"class": "\\Mezon\\Tests\\TestingView"
 	},
 	"main": {
 		"placeholder": "main",
-		"class": "\\Mezon\\View\\Tests\\TestingView",
+		"class": "\\Mezon\\Tests\\TestingView",
 		"name": "MainFromConfig"
 	},
 	"presenter": {
