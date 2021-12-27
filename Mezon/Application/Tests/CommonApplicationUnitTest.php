@@ -13,7 +13,7 @@ class CommonApplicationUnitTest extends TestCase
     /**
      *
      * {@inheritdoc}
-     * @see \PHPUnit\Framework\TestCase::setUp()
+     * @see TestCase::setUp()
      */
     protected function setUp(): void
     {
@@ -132,23 +132,5 @@ class CommonApplicationUnitTest extends TestCase
 
         // test body
         $application->run();
-    }
-
-    /**
-     * Testing exception wile action-message parsing
-     */
-    public function testUnexistingException(): void
-    {
-        // assertions
-        $this->expectException(\Exception::class);
-
-        // setup
-        $_GET['action-message'] = 'unexisting-message';
-        unset($_GET['error-message']);
-        unset($_GET['success-message']);
-        $application = new TestCommonApplication();
-
-        // test body
-        $application->result();
     }
 }

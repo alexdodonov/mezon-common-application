@@ -35,9 +35,10 @@
 		}
 	},
 	"scripts": {
-		"test": "php ./vendor/phpunit/phpunit/phpunit",
+		"test": "php ./vendor/phpunit/phpunit/phpunit --testsuit all --order-by=random",
 		"psalm": "php ./vendor/vimeo/psalm/psalm --show-info=true --no-cache",
 		"psalm-self": "php ./vendor/vimeo/psalm/psalm --config=psalm-self.xml --show-info=true --no-cache",
-		"infection": "php ./vendor/infection/infection/bin/infection --threads=4 --min-msi=59"
+		"infection": "php ./vendor/infection/infection/bin/infection --threads=4 --min-msi=59",
+		"debug": "php ./vendor/phpunit/phpunit/phpunit --testsuit all --order-by=random --random-order-seed 1640625336"
 	}
 }

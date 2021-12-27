@@ -291,67 +291,6 @@ class CommonApplication extends Application
     }
 
     /**
-     * Does file exists
-     *
-     * @param string $fileName
-     *            file name
-     * @return bool true if the file exists, false otherwise
-     */
-    protected function fileExists(string $fileName): bool
-    {
-        // TODO remove it
-        return $this->getTemplate()->fileExists($fileName);
-    }
-
-    /**
-     * Method returns localized error message by it's key
-     *
-     * @param string $actionMessageCode
-     *            key of the message
-     * @return string localized error message by it's key
-     */
-    protected function getActionMessage(string $actionMessageCode): string
-    {
-        // TODO remove it because HtmlTemplate incapsulates this functionality
-        if ($this->fileExists('action-messages.json')) {
-            $messages = $this->getTemplate()->getFile('action-messages.json');
-            $messages = json_decode($messages, true);
-
-            if (isset($messages[$actionMessageCode])) {
-                return $messages[$actionMessageCode];
-            } else {
-                throw (new \Exception('The message with locator "' . $actionMessageCode . '" was not found', - 1));
-            }
-        }
-
-        return '';
-    }
-
-    /**
-     * Method sets message variable
-     *
-     * @param string $successMessageLocator
-     *            message code
-     */
-    public function setSuccessMessage(string $successMessageLocator): void
-    {
-        // TODO remove it
-        $this->getTemplate()->setPageVar('action-message', $this->getActionMessage($successMessageLocator));
-    }
-
-    /**
-     * Method sets message variable
-     *
-     * @param string $errorMessageLocator
-     *            message code
-     */
-    public function setErrorMessage(string $errorMessageLocator): void
-    {
-        // TODO remove it
-        $this->getTemplate()->setPageVar('action-message', $this->getActionMessage($errorMessageLocator));
-    }
-
-    /**
      * Method compiles result record
      *
      * @param mixed $presenter
@@ -365,9 +304,9 @@ class CommonApplication extends Application
         }
 
         if (($actionMessage = $this->getTemplate()->getSuccessMessageCode()) !== '') {
-            $this->setSuccessMessage($actionMessage);
+            $this->getTemplate()->setSuccessMessage($actionMessage);
         } elseif (($actionMessage = $this->getTemplate()->getErrorMessageCode()) !== '') {
-            $this->setErrorMessage($actionMessage);
+            $this->getTemplate()->setErrorMessage($actionMessage);
         }
     }
 

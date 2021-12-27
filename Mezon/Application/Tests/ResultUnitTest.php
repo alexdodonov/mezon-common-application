@@ -10,7 +10,7 @@ use Mezon\View;
  */
 class ResultUnitTest extends TestCase
 {
-    
+
     /**
      * Data provider
      *
@@ -28,56 +28,57 @@ class ResultUnitTest extends TestCase
                 function (array $params) {
                     $this->assertTrue(TestingPresenter::$wasCalled);
                 }
-                ],
-                [ // #1 testing action message setup
-                    function (): TestCommonApplication {
-                        $_GET['action-message'] = 'test-error';
-                        return new TestCommonApplication();
-                    },
-                    $presenter,
-                    function (array $params): void {
-                        $this->assertEquals('message', $params[1]->getTemplate()
-                            ->getPageVar('action-message'));
-                    }
-                    ],
-                    [ // #2 testing error message setup
-                        function (): TestCommonApplication {
-                            $_GET['error-message'] = 'test-error';
-                            return new TestCommonApplication();
-                        },
-                        $presenter,
-                        function (array $params): void {
-                            $this->assertEquals('message', $params[1]->getTemplate()
-                                ->getPageVar('action-message'));
-                        }
-                        ],
-                        [ // #3 testing success message setup
-                            function (): TestCommonApplication {
-                                $_GET['success-message'] = 'test-error';
-                                return new TestCommonApplication();
-                            },
-                            $presenter,
-                            function (array $params): void {
-                                $this->assertEquals('message', $params[1]->getTemplate()
-                                    ->getPageVar('action-message'));
-                            }
-                            ],
-                            [ // #4 no file with the messages
-                                function (): TestCommonApplication {
-                                    $_GET['action-message'] = 'test-error';
-                                    $application = new TestCommonApplication();
-                                    $application->hasMessages = false;
-                                    return $application;
-                                },
-                                $presenter,
-                                function (array $params): void {
-                                    $this->assertEquals('', $params[1]->getTemplate()
-                                        ->getPageVar('action-message'));
-                                }
-                                ]
-                                ];
+            ],
+            [ // #1 testing action message setup
+                function (): TestCommonApplication {
+                    $_GET['action-message'] = 'test-error';
+                    return new TestCommonApplication();
+                },
+                $presenter,
+                function (array $params): void {
+                    $this->assertEquals('message', $params[1]->getTemplate()
+                        ->getPageVar('action-message'));
+                }
+            ],
+            [ // #2 testing error message setup
+                function (): TestCommonApplication {
+                    $_GET['error-message'] = 'test-error';
+                    return new TestCommonApplication();
+                },
+                $presenter,
+                function (array $params): void {
+                    $this->assertEquals('message', $params[1]->getTemplate()
+                        ->getPageVar('action-message'));
+                }
+            ],
+            [ // #3 testing success message setup
+                function (): TestCommonApplication {
+                    $_GET['success-message'] = 'test-error';
+                    return new TestCommonApplication();
+                },
+                $presenter,
+                function (array $params): void {
+                    $this->assertEquals('message', $params[1]->getTemplate()
+                        ->getPageVar('action-message'));
+                }
+            ],
+            [ // #4 no file with the messages
+                function (): TestCommonApplication {
+                    $_GET['action-message'] = 'test-error';
+                    $application = new TestCommonApplication();
+                    $application->hasMessages = false;
+                    $application->getTemplate()->setPaths([]);
+                    return $application;
+                },
+                $presenter,
+                function (array $params): void {
+                    $this->assertEquals('', $params[1]->getTemplate()
+                        ->getPageVar('action-message'));
+                }
+            ]
+        ];
     }
-    
+
     /**
      * Testing result() method
      *
@@ -99,10 +100,10 @@ class ResultUnitTest extends TestCase
             unset($_GET['action-message']);
         }
         $application = $setup();
-        
+
         // test body
         $application->result($handler);
-        
+
         // assertions
         if ($assert !== null) {
             $assert([
