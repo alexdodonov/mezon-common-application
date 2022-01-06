@@ -7,7 +7,7 @@ use Mezon\Application\CommonApplication;
 use Mezon\Tests\TestingView;
 
 /**
- * Application for testing purposes.
+ * Application for testing purposes
  */
 class TestCommonApplication extends CommonApplication
 {
@@ -52,26 +52,5 @@ class TestCommonApplication extends CommonApplication
     function actionRest(): array
     {
         throw (new Rest\Exception('exception', - 1, 502, 'body'));
-    }
-
-    function redirectTo($url): void
-    {
-        // do nothing
-    }
-
-    /**
-     * Flag
-     *
-     * @var boolean
-     */
-    public $hasMessages = true;
-
-    protected function fileExists(string $fileName): bool
-    {
-        if ($this->hasMessages) {
-            return parent::fileExists($fileName);
-        } else {
-            return false;
-        }
     }
 }
