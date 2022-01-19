@@ -63,40 +63,6 @@ class CommonApplicationUnitTest extends TestCase
     }
 
     /**
-     * Method asserts exception field
-     *
-     * @param string $output
-     *            textual representation of the exception
-     */
-    protected function assertExceptionFields(string $output): void
-    {
-        $this->assertStringContainsString('"message"', $output);
-        $this->assertStringContainsString('"code"', $output);
-        $this->assertStringContainsString('"call_stack"', $output);
-        $this->assertStringContainsString('"host"', $output);
-    }
-
-    /**
-     * Testing handleException method
-     */
-    public function testHandleException(): void
-    {
-        // setup
-        $application = new TestCommonApplication();
-        $output = '';
-        $e = new \Exception('', 0);
-
-        // test body
-        ob_start();
-        $application->handleException($e);
-        $output = ob_get_contents();
-        ob_end_clean();
-
-        // assertions
-        $this->assertExceptionFields($output);
-    }
-
-    /**
      * Testing exception throwing after invalid route handling
      */
     public function testInvalidRouteException(): void

@@ -38,14 +38,20 @@ class HandleRestExceptionUnitTest extends TestCase
     }
 
     /**
-     * Testing handle_rest_exception method
+     * Testing handleRestException method
      */
     public function testHandleRestException(): void
     {
         // setup
         $application = new TestCommonApplication();
+        $e = new Rest\Exception(
+            '',
+            0,
+            200,
+            '<th>( ! )</span>error!</th>
+        <tr><td></td><td></td><td></td><td></td><td>Call 1:100</td>
+        <tr><td></td><td></td><td></td><td></td><td>Call 2:200</td></table>');
 
-        $e = new Rest\Exception('', 0, 200, '<th>( ! )</span>error!</th>');
         // test body
         ob_start();
         $application->handleRestException($e);
@@ -56,5 +62,27 @@ class HandleRestExceptionUnitTest extends TestCase
         $this->assertExceptionFields($output);
         $this->assertStringContainsString('"http_body"', $output);
         $this->assertStringContainsString('error!', $output);
+        $this->assertStringContainsString('Call 1 (100)', $output);
+        $this->assertStringContainsString('Call 2 (200)', $output);
+    }
+
+    /**
+     * Testing handleRestException method
+     */
+    public function testHandleRestExceptionForUndefinedFormat(): void
+    {
+        // setup
+        $application = new TestCommonApplication();
+        $e = new Rest\Exception('', 0, 200, '<b>Warning!</b> Some PHP warning');
+
+        // test body
+        ob_start();
+        $application->handleRestException($e);
+        $output = ob_get_contents();
+        ob_end_clean();
+
+        // assertions
+        $this->assertExceptionFields($output);
+        $this->assertStringContainsString('&lt;b&gt;Warning!&lt;\/b&gt; Some PHP warning', $output);
     }
 }

@@ -66,7 +66,6 @@ class ResultUnitTest extends TestCase
                 function (): TestCommonApplication {
                     $_GET['action-message'] = 'test-error';
                     $application = new TestCommonApplication();
-                    $application->hasMessages = false;
                     $application->getTemplate()->setPaths([]);
                     return $application;
                 },

@@ -146,12 +146,10 @@ class CommonApplication extends Application
             }
 
             // saving result
-            $return = array_merge($return, $matches);
+            return array_merge($matches, $return);
         } else {
             return $return;
         }
-
-        return $return;
     }
 
     /**
