@@ -2,6 +2,7 @@
 namespace Mezon\Application\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Mezon\Conf\Conf;
 
 /**
  *
@@ -9,6 +10,17 @@ use PHPUnit\Framework\TestCase;
  */
 class HandleExceptionUnitTest extends TestCase
 {
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        // setup context
+        Conf::setConfigStringValue('headers/layer', 'mock');
+    }
 
     /**
      * Method asserts exception field

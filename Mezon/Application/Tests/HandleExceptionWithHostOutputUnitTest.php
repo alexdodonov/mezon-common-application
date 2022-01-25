@@ -2,6 +2,7 @@
 namespace Mezon\Application\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Mezon\Conf\Conf;
 
 /**
  *
@@ -9,6 +10,17 @@ use PHPUnit\Framework\TestCase;
  */
 class HandleExceptionWithHostOutputUnitTest extends TestCase
 {
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        // setup context
+        Conf::setConfigStringValue('headers/layer', 'mock');
+    }
 
     /**
      * Testing handleException method
@@ -34,7 +46,7 @@ class HandleExceptionWithHostOutputUnitTest extends TestCase
 
     /**
      * Testing handleException method without method
-     * 
+     *
      * @psalm-suppress RedundantCondition
      */
     public function testHandleExceptionWithoutHost(): void

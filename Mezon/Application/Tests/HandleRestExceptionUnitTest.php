@@ -3,6 +3,7 @@ namespace Mezon\Application\Tests;
 
 use Mezon\Rest;
 use PHPUnit\Framework\TestCase;
+use Mezon\Conf\Conf;
 
 /**
  *
@@ -20,6 +21,7 @@ class HandleRestExceptionUnitTest extends TestCase
     {
         // setup context
         $_SERVER['REQUEST_METHOD'] = 'GET';
+        Conf::setConfigStringValue('headers/layer', 'mock');
     }
 
     /**

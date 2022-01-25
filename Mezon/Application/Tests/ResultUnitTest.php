@@ -3,6 +3,7 @@ namespace Mezon\Application\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Mezon\View;
+use Mezon\Conf\Conf;
 
 /**
  *
@@ -10,6 +11,17 @@ use Mezon\View;
  */
 class ResultUnitTest extends TestCase
 {
+    
+    /**
+     *
+     * {@inheritdoc}
+     * @see TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        // setup context
+        Conf::setConfigStringValue('headers/layer', 'mock');
+    }
 
     /**
      * Data provider

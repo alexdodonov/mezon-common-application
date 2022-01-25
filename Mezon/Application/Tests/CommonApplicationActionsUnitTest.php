@@ -3,6 +3,7 @@ namespace Mezon\Application\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Mezon\Tests\TestingView;
+use Mezon\Conf\Conf;
 
 /**
  *
@@ -26,6 +27,8 @@ class CommonApplicationActionsUnitTest extends TestCase
         }
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        Conf::setConfigStringValue('headers/layer', 'mock');
     }
 
     /**
