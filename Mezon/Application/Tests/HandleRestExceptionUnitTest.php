@@ -87,7 +87,7 @@ class HandleRestExceptionUnitTest extends TestCase
         $this->assertExceptionFields($output);
         $this->assertStringContainsString('&lt;b&gt;Warning!&lt;\/b&gt; Some PHP warning', $output);
     }
-    
+
     /**
      * Testing handleRestException method
      */
@@ -96,13 +96,13 @@ class HandleRestExceptionUnitTest extends TestCase
         // setup
         $application = new TestCommonApplication();
         $e = new Rest\Exception('', 0, 200, '{"call 1": "method 1"}');
-        
+
         // test body
         ob_start();
         $application->handleRestException($e);
         $output = ob_get_contents();
         ob_end_clean();
-        
+
         // assertions
         $this->assertExceptionFields($output);
         $this->assertStringContainsString('"call 1": "method 1"', $output);
