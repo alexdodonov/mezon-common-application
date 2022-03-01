@@ -4,6 +4,7 @@ namespace Mezon\Application;
 use Mezon\HtmlTemplate\HtmlTemplate;
 use Mezon\Rest;
 use Mezon\ViewInterface;
+use Mezon\Utils\Fs;
 
 /**
  * Class CommonApplication
@@ -62,7 +63,7 @@ class CommonApplication extends Application
             'noRouteFoundErrorHandler'
         ]);
 
-        $this->loadActoinsFromConfig();
+        $this->loadActionsFromConfig();
     }
 
     /**
@@ -346,9 +347,9 @@ class CommonApplication extends Application
     /**
      * Method loads all actions from ./Actions directory
      */
-    private function loadActoinsFromConfig(): void
+    private function loadActionsFromConfig(): void
     {
-        $this->loadActionsFromDirectory($this->getClassPath() . '/Actions/');
+        $this->loadActionsFromDirectory(Fs::getClassPath($this) . '/Actions/');
     }
 }
 
