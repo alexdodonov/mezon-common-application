@@ -82,23 +82,4 @@ class CommonApplicationUnitTest extends TestCase
         // test body
         $application->run();
     }
-
-    /**
-     * Testing exception throwing after invalid route handling
-     */
-    public function testRestException(): void
-    {
-        // setup and assertions
-        $_GET['r'] = 'rest';
-        $application = $this->getMockBuilder(TestCommonApplication::class)
-            ->onlyMethods([
-            'handleRestException'
-        ])
-            ->getMock();
-        $application->expects($this->once())
-            ->method('handleRestException');
-
-        // test body
-        $application->run();
-    }
 }

@@ -9,7 +9,7 @@ use Mezon\Conf\Conf;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class CommonApplicationActionsUnitTest extends TestCase
+class ActionsUnitTest extends TestCase
 {
 
     /**
