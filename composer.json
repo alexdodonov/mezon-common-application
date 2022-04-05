@@ -41,5 +41,10 @@
 		"psalm-self": "php ./vendor/vimeo/psalm/psalm --config=psalm-self.xml --show-info=true --no-cache",
 		"infection": "php ./vendor/infection/infection/bin/infection --threads=4 --min-msi=59",
 		"debug": "php ./vendor/phpunit/phpunit/phpunit --testsuit all --order-by=random --random-order-seed 1640625336"
+	},
+	"config": {
+		"allow-plugins": {
+			"infection/extension-installer": true
+		}
 	}
 }

@@ -234,10 +234,12 @@ class ActionBuilder
         }
 
         // we load actions when parsing configs
-        // but compile action while running getActionBodyFromSettingsObject within $app->$method
+        // but compile action while running getActionBodyFromSettingsObject within $app->'action'.$method
         static::$loadedActions[$method] = $settings;
 
-        $app->$method = function () use ($settings, $app): array {
+        $classMethod = 'action' . $method;
+
+        $app->$classMethod = function () use ($settings, $app): array {
             list ($result, $presenter) = self::getActionBodyFromSettingsObject($app, $settings);
 
             $app->result($presenter);
@@ -245,6 +247,6 @@ class ActionBuilder
             return $result;
         };
 
-        static::loadRouteForApp($app, $method);
+        static::loadRouteForApp($app, $classMethod);
     }
 }
