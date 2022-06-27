@@ -48,9 +48,9 @@ class ActionBuilder
      *
      * @param string $name
      *            action name
-     * @return array|object action config
+     * @return array action config
      */
-    private static function getLoadedActionByName(string $name)
+    private static function getLoadedActionByName(string $name): array
     {
         $name = basename($name, '.json');
 
@@ -146,11 +146,10 @@ class ActionBuilder
      *
      * @param CommonApplication $app
      *            application object
-     * @param
-     *            object|array settings object
+     * @param array $settings settings object
      * @return array ($result, $presenter)
      */
-    private static function getActionBodyFromSettingsObject(CommonApplication $app, $settings): array
+    private static function getActionBodyFromSettingsObject(CommonApplication $app, array $settings): array
     {
         $result = [];
         $presenter = null;
@@ -222,12 +221,12 @@ class ActionBuilder
      *
      * @param CommonApplication $app
      *            application object
-     * @param array|object $settings
+     * @param array $settings
      *            action settings
      * @param string $method
      *            method name
      */
-    public static function createActionFromSettingsObject(CommonApplication $app, $settings, string $method = ''): void
+    public static function createActionFromSettingsObject(CommonApplication $app, array $settings, string $method = ''): void
     {
         if ($method === '') {
             $method = Fetcher::getField($settings, 'name', false);

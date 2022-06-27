@@ -4,6 +4,7 @@ namespace Mezon\Application\Tests;
 use PHPUnit\Framework\TestCase;
 use Mezon\Tests\TestingView;
 use Mezon\Conf\Conf;
+use Mezon\Application\ActionBuilder;
 
 /**
  *
@@ -29,6 +30,7 @@ class ActionsUnitTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
         Conf::setConfigStringValue('headers/layer', 'mock');
+        Conf::setConfigStringValue('redirect/layer', 'mock');
     }
 
     /**
@@ -117,5 +119,46 @@ class ActionsUnitTest extends TestCase
 
         // assertions
         $asserter($result);
+    }
+
+    /**
+     * Testing exception while
+     */
+    public function testActionsJsonException(): void
+    {
+        // setup
+        $_GET['r'] = 'failed-override';
+        $application = new TestCommonApplication();
+        ActionBuilder::createActionFromJsonConfig($application, __DIR__ . '/OtherActions/FailedOverride.json');
+
+        // test body
+        ob_start();
+        $application->run();
+        $result = ob_get_flush();
+        ob_clean();
+
+        // assertions
+        $this->assertStringContainsString(
+            '"message": "Overriding action with name \"UnexistingConfig\" was not found",',
+            $result);
+        $this->assertStringContainsString('"code": -1,', $result);
+    }
+
+    /**
+     * Testing method createActionFromSettingsObject
+     */
+    public function testCreateActionFromSettingsObject(): void
+    {
+        // setup
+        $application = new TestCommonApplication();
+
+        // test body
+        ActionBuilder::createActionFromSettingsObject($application, [
+            'name' => 'ActionFromObject'
+        ]);
+
+        // assertions
+        $this->assertTrue($application->getRouter()
+            ->routeExists('action-from-object'));
     }
 }
